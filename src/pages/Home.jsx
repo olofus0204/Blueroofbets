@@ -168,9 +168,14 @@ function Home() {
                   </div>
 
                   <div className="versus">
-                    <span>VS</span>
-                    <small>{match.time}</small>
-                  </div>
+  <span>VS</span>
+
+  {/* Display the match kick-off time with a clock icon. */}
+  <small className="match-time">
+    <Clock size={12} />
+    {match.time}
+  </small>
+</div>
 
                   <div className="team">
                     <div className="team-placeholder">

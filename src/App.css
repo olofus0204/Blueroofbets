@@ -435,6 +435,15 @@ button {
   font-size: 9px;
 }
 
+/* Display the clock icon and kick-off time together. */
+.match-time {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
 .versus {
   display: flex;
   flex-direction: column;
