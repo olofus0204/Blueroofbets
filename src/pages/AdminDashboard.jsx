@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import {
   LayoutDashboard,
@@ -23,6 +22,8 @@ import TeamsManagement from './TeamsManagement';
 import FixturesManagement from './FixturesManagement';
 import PredictionsManagement from './PredictionsManagement';
 import ParticipantsManagement from './ParticipantsManagement';
+import TournamentSettings from './TournamentSettings';
+import RecentActivity from './RecentActivity';
 
 function AdminDashboard() {
   const [activePage, setActivePage] = useState('Overview');
@@ -48,6 +49,7 @@ function AdminDashboard() {
     { name: 'Fixtures', icon: CalendarDays },
     { name: 'Predictions', icon: Trophy },
     { name: 'Participants', icon: Users },
+    { name: 'Recent Activity', icon: Activity },
     { name: 'Settings', icon: Settings },
   ];
 
@@ -129,7 +131,8 @@ function AdminDashboard() {
     Fixtures: 'Create, edit and manage tournament fixtures.',
     Predictions: 'Monitor participant predictions.',
     Participants: 'View and manage registered participants.',
-    Settings: 'Manage your tournament configuration.',
+    'Recent Activity': 'Review registrations, predictions and fixture updates.',
+    Settings: 'Manage your tournament configuration and prediction markets.',
   };
 
   return (
@@ -287,7 +290,7 @@ function AdminDashboard() {
                   </div>
                   <span>Predictions</span>
                   <h3>{statsLoading ? '...' : stats.predictions}</h3>
-                  <small>Total predictions submitted</small>
+                  <small>Total prediction slips submitted</small>
                 </div>
               </div>
 
@@ -350,50 +353,22 @@ function AdminDashboard() {
                 </div>
               </div>
 
-              {/* Recent activity remains a placeholder for now. */}
-              <div className="admin-section-card recent-activity">
-                <div className="admin-section-heading">
-                  <div>
-                    <h3>Recent Activity</h3>
-                    <p>Keep track of tournament updates.</p>
-                  </div>
-                </div>
-
-                <div className="empty-activity">
-                  <Activity size={27} />
-                  <p>No recent activity yet.</p>
-                  <span>
-                    Updates will appear here as your tournament grows.
-                  </span>
-                </div>
-              </div>
+              {/* Show the five most recent recorded events on Overview. */}
+              <RecentActivity limit={5} />
             </>
           )}
 
-          {/* Functional team management section. */}
+          {/* Existing management sections remain connected. */}
           {activePage === 'Teams' && <TeamsManagement />}
-
-          {/* Functional fixtures management section. */}
           {activePage === 'Fixtures' && <FixturesManagement />}
-
-          {/* Functional prediction management section. */}
           {activePage === 'Predictions' && <PredictionsManagement />}
+          {activePage === 'Participants' && <ParticipantsManagement />}
 
-  
-          {/* Functional participant management section. */}
-           {activePage === 'Participants' && <ParticipantsManagement />}
-  
+          {/* Full activity history. */}
+          {activePage === 'Recent Activity' && <RecentActivity />}
 
-          {/* Tournament settings placeholder. */}
-          {activePage === 'Settings' && (
-            <div className="admin-section-card section-placeholder">
-              <div className="placeholder-icon">
-                <Settings size={30} />
-              </div>
-              <h3>Settings Management</h3>
-              <p>Tournament configuration will be connected here.</p>
-            </div>
-          )}
+          {/* Functional tournament settings. */}
+          {activePage === 'Settings' && <TournamentSettings />}
         </section>
       </main>
     </div>
