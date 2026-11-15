@@ -21,6 +21,8 @@ import { supabase } from '../services/supabase';
 import './AdminDashboard.css';
 import TeamsManagement from './TeamsManagement';
 import FixturesManagement from './FixturesManagement';
+import PredictionsManagement from './PredictionsManagement';
+import ParticipantsManagement from './ParticipantsManagement';
 
 function AdminDashboard() {
   const [activePage, setActivePage] = useState('Overview');
@@ -374,20 +376,22 @@ function AdminDashboard() {
           {/* Functional fixtures management section. */}
           {activePage === 'Fixtures' && <FixturesManagement />}
 
-          {/* Placeholders for sections we have not built yet. */}
-          {['Predictions', 'Participants', 'Settings'].includes(activePage) && (
+          {/* Functional prediction management section. */}
+          {activePage === 'Predictions' && <PredictionsManagement />}
+
+  
+          {/* Functional participant management section. */}
+           {activePage === 'Participants' && <ParticipantsManagement />}
+  
+
+          {/* Tournament settings placeholder. */}
+          {activePage === 'Settings' && (
             <div className="admin-section-card section-placeholder">
               <div className="placeholder-icon">
-                {activePage === 'Predictions' && <Trophy size={30} />}
-                {activePage === 'Participants' && <Users size={30} />}
-                {activePage === 'Settings' && <Settings size={30} />}
+                <Settings size={30} />
               </div>
-
-              <h3>{activePage} Management</h3>
-              <p>
-                This section is being prepared. We will connect it to
-                your Supabase database next.
-              </p>
+              <h3>Settings Management</h3>
+              <p>Tournament configuration will be connected here.</p>
             </div>
           )}
         </section>
