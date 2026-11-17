@@ -175,6 +175,11 @@ function FixturesManagement() {
           stage: match.stage || 'group',
           home_score: match.home_score ?? '',
           away_score: match.away_score ?? '',
+          // Store half-time scores separately from normal-time full-time scores.
+          half_time_home_score: match.half_time_home_score ?? '',
+          half_time_away_score: match.half_time_away_score ?? '',
+          // Record which side scored first, or no_goal for a 0-0 match.
+          first_goal_outcome: match.first_goal_outcome ?? '',
           extra_time_home_score: match.extra_time_home_score ?? '',
           extra_time_away_score: match.extra_time_away_score ?? '',
           home_penalty_score: match.home_penalty_score ?? '',
@@ -477,9 +482,16 @@ function FixturesManagement() {
       return;
     }
 
-    // Read normal-time scores.
+    // Read normal-time full-time scores.
     const homeScore = readOptionalScore(draft.home_score);
     const awayScore = readOptionalScore(draft.away_score);
+
+    // Read the half-time scores used by the half-time and second-half markets.
+    const halfTimeHome = readOptionalScore(draft.half_time_home_score);
+    const halfTimeAway = readOptionalScore(draft.half_time_away_score);
+
+    // Read the first-goal selection used by the first-team-to-score market.
+    const firstGoalOutcome = draft.first_goal_outcome || null;
 
     // Read extra-time scores.
     const extraHome = readOptionalScore(draft.extra_time_home_score);
@@ -492,6 +504,8 @@ function FixturesManagement() {
     const scores = [
       homeScore,
       awayScore,
+      halfTimeHome,
+      halfTimeAway,
       extraHome,
       extraAway,
       homePenalties,
@@ -505,6 +519,50 @@ function FixturesManagement() {
 
     if ((homeScore === null) !== (awayScore === null)) {
       setError('Enter both normal-time scores, or leave both empty.');
+      return;
+    }
+
+    // Half-time scores must be entered as a pair.
+    if ((halfTimeHome === null) !== (halfTimeAway === null)) {
+      setError('Enter both half-time scores, or leave both empty.');
+      return;
+    }
+
+    // A half-time score cannot exist without the corresponding full-time score.
+    if (halfTimeHome !== null && (homeScore === null || awayScore === null)) {
+      setError('Enter both normal-time scores before entering half-time scores.');
+      return;
+    }
+
+    // Half-time scores cannot exceed the final normal-time scores.
+    if (
+      halfTimeHome !== null &&
+      (halfTimeHome > homeScore || halfTimeAway > awayScore)
+    ) {
+      setError('Half-time scores cannot be higher than the corresponding full-time scores.');
+      return;
+    }
+
+    // Validate the first-goal value and ensure it is compatible with the final score.
+    if (
+      firstGoalOutcome !== null &&
+      !['home', 'away', 'no_goal'].includes(firstGoalOutcome)
+    ) {
+      setError('Select a valid first-team-to-score result.');
+      return;
+    }
+
+    if (firstGoalOutcome !== null && (homeScore === null || awayScore === null)) {
+      setError('Enter both normal-time scores before recording the first team to score.');
+      return;
+    }
+
+    if (
+      (firstGoalOutcome === 'home' && homeScore === 0) ||
+      (firstGoalOutcome === 'away' && awayScore === 0) ||
+      (firstGoalOutcome === 'no_goal' && (homeScore !== 0 || awayScore !== 0))
+    ) {
+      setError('The first team to score must be consistent with the final score. Use No goal only for a 0-0 result.');
       return;
     }
 
@@ -664,6 +722,11 @@ function FixturesManagement() {
           kickoff_at: kickoff,
           home_score: homeScore,
           away_score: awayScore,
+          // Save half-time scores for half-time and second-half prediction scoring.
+          half_time_home_score: halfTimeHome,
+          half_time_away_score: halfTimeAway,
+          // Save the manually verified first scorer for its prediction market.
+          first_goal_outcome: firstGoalOutcome,
 
           // Extra-time and penalty scores are only used in knockout matches.
           extra_time_home_score: stage === 'group' ? null : extraHome,
@@ -1462,6 +1525,81 @@ function FixturesManagement() {
                           </select>
                         </label>
                       </div>
+                    </div>
+
+                    {/* Half-time and first-scorer details feed three prediction markets. */}
+                    <div className="rounded-lg border border-indigo-200 bg-indigo-50 p-4">
+                      <p className="mb-1 text-sm font-semibold text-indigo-900">
+                        Half-time and First Goal Details
+                      </p>
+
+                      <p className="mb-3 text-xs text-indigo-800">
+                        Enter these match details from the official result. They are used to score half-time result,
+                        second-half winner and first-team-to-score predictions. These are separate from extra-time scores.
+                      </p>
+
+                      <div className="grid gap-3 sm:grid-cols-3">
+                        <label className="text-xs font-medium text-slate-700">
+                          Home Half-time Score
+                          <input
+                            type="number"
+                            min="0"
+                            step="1"
+                            value={draft.half_time_home_score ?? ''}
+                            onChange={(event) =>
+                              updateDraft(
+                                match.id,
+                                'half_time_home_score',
+                                event.target.value
+                              )
+                            }
+                            className="mt-1 w-full rounded-lg border border-indigo-300 bg-white p-2.5 text-sm"
+                          />
+                        </label>
+
+                        <label className="text-xs font-medium text-slate-700">
+                          Away Half-time Score
+                          <input
+                            type="number"
+                            min="0"
+                            step="1"
+                            value={draft.half_time_away_score ?? ''}
+                            onChange={(event) =>
+                              updateDraft(
+                                match.id,
+                                'half_time_away_score',
+                                event.target.value
+                              )
+                            }
+                            className="mt-1 w-full rounded-lg border border-indigo-300 bg-white p-2.5 text-sm"
+                          />
+                        </label>
+
+                        <label className="text-xs font-medium text-slate-700">
+                          First Team to Score
+                          <select
+                            value={draft.first_goal_outcome ?? ''}
+                            onChange={(event) =>
+                              updateDraft(
+                                match.id,
+                                'first_goal_outcome',
+                                event.target.value
+                              )
+                            }
+                            className="mt-1 w-full rounded-lg border border-indigo-300 bg-white p-2.5 text-sm"
+                          >
+                            <option value="">Select first scorer</option>
+                            <option value="home">{homeTeam?.name || 'Home team'}</option>
+                            <option value="away">{awayTeam?.name || 'Away team'}</option>
+                            <option value="no_goal">No goal (0-0)</option>
+                          </select>
+                        </label>
+                      </div>
+
+                      <p className="mt-3 text-xs text-indigo-800">
+                        For a 0-0 match, enter 0-0 at half-time and full-time, then select No goal.
+                        If these details are left blank, the related prediction markets cannot be fully scored yet.
+                      </p>
                     </div>
 
                     {/* Knockout extra-time inputs appear when normal time is tied. */}

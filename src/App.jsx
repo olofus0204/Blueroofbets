@@ -5,10 +5,13 @@ import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Standings from './pages/Standings';
-
+import Leaderboard from './pages/Leaderboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import AdminDashboard from './pages/AdminDashboard';
+import ParticipantDashboard from './pages/ParticipantDashboard';
+import PredictionPage from './pages/PredictionPage';
+import Fixtures from './pages/Fixtures';
 
 import './App.css';
 
@@ -22,7 +25,34 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/standings" element={<Standings />} />
+   
+          {/* Any signed-in participant can access this dashboard. */}
+<Route
+  path="/dashboard"
+  element={
+    <ProtectedRoute>
+      <ParticipantDashboard />
+    </ProtectedRoute>
+  }
+/>
+ {/* Signed-in participants can submit predictions for a fixture. */}
+   <Route
+     path="/predict/:matchId"
+     element={
+       <ProtectedRoute>
+         <PredictionPage />
+       </ProtectedRoute>
+     }
+   />
 
+   {/* Public fixtures page. */}
+<Route path="/fixtures" element={<Fixtures />} />
+  
+    {/* Public tournament leaderboard. */}
+<Route
+  path="/leaderboard"
+  element={<Leaderboard />}
+/>
           {/* Admin-only pages. */}
           <Route
             path="/admin"

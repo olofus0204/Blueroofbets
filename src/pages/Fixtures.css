@@ -1,0 +1,503 @@
+/* Public fixtures page. This stylesheet is independent of the admin panel. */
+.public-fixtures-page {
+  min-height: 100vh;
+  background: #f4f6fb;
+  color: #111827;
+  font-family: inherit;
+}
+
+.public-fixtures-header {
+  min-height: 74px;
+  padding: 12px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: #10172a;
+  color: #fff;
+}
+
+.public-fixtures-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.public-fixtures-brand-icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: #2448e8;
+}
+
+.public-fixtures-brand-highlight {
+  color: #a3e635;
+}
+
+.public-fixtures-nav {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.public-fixtures-nav a {
+  color: #d8dfeb;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.public-fixtures-nav a:hover {
+  color: #a3e635;
+}
+
+.public-fixtures-content {
+  width: min(1120px, 92%);
+  margin: 0 auto;
+  padding: 28px 0 45px;
+}
+
+.public-fixtures-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 20px;
+  color: #4056c5;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.public-fixtures-hero {
+  padding: 30px 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-radius: 19px;
+  background: linear-gradient(120deg, #111a36, #203da5);
+  color: #fff;
+}
+
+.public-fixtures-eyebrow {
+  margin: 0 0 7px;
+  color: #536bdc;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.public-fixtures-hero .public-fixtures-eyebrow {
+  color: #c4d0ff;
+}
+
+.public-fixtures-hero h1 {
+  margin: 0 0 8px;
+  font-size: clamp(28px, 4vw, 38px);
+}
+
+.public-fixtures-hero p:last-child {
+  margin: 0;
+  color: #d5ddf3;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.public-fixtures-hero-icon {
+  flex: 0 0 auto;
+  color: #c8f36b;
+}
+
+.public-fixtures-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 13px;
+  margin: 20px 0;
+}
+
+.public-fixtures-summary article {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid #e3e8f1;
+  border-radius: 13px;
+  background: #fff;
+}
+
+.public-fixtures-summary article span {
+  color: #647087;
+  font-size: 12px;
+}
+
+.public-fixtures-summary article strong {
+  color: #141d34;
+  font-size: 26px;
+}
+
+.public-fixtures-filters {
+  padding: 20px;
+  border: 1px solid #e4e9f1;
+  border-radius: 15px;
+  background: #fff;
+}
+
+.public-fixtures-filter-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 15px;
+  color: #3449b4;
+}
+
+.public-fixtures-filter-title h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 16px;
+}
+
+.public-fixtures-filter-grid {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(3, 1fr);
+  gap: 12px;
+}
+
+.public-fixtures-filter-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #59657a;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.public-fixtures-filter-grid input,
+.public-fixtures-filter-grid select {
+  width: 100%;
+  min-height: 41px;
+  padding: 9px 11px;
+  border: 1px solid #d8deea;
+  border-radius: 8px;
+  background: #fff;
+  color: #172033;
+  font-size: 13px;
+}
+
+.public-fixtures-filter-footer {
+  margin-top: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #788398;
+  font-size: 11px;
+}
+
+.public-fixtures-filter-footer button {
+  padding: 5px 0;
+  border: 0;
+  background: transparent;
+  color: #354fbd;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.public-fixtures-error {
+  margin-top: 18px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  background: #fff1f2;
+  color: #991b1b;
+  font-size: 12px;
+}
+
+.public-fixtures-list-heading {
+  margin: 31px 0 15px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.public-fixtures-list-heading .public-fixtures-eyebrow {
+  margin-bottom: 5px;
+}
+
+.public-fixtures-list-heading h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 22px;
+}
+
+.public-fixtures-refresh {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px;
+  border: 1px solid #d8deea;
+  border-radius: 8px;
+  background: #fff;
+  color: #3349b7;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.public-fixtures-refresh:disabled {
+  cursor: not-allowed;
+  opacity: .6;
+}
+
+.is-spinning {
+  animation: fixtures-spin .8s linear infinite;
+}
+
+@keyframes fixtures-spin {
+  to { transform: rotate(360deg); }
+}
+
+.public-fixtures-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.public-fixture-card {
+  padding: 18px;
+  border: 1px solid #e3e8f1;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 4px 14px rgb(15 23 42 / 3%);
+}
+
+.public-fixture-card-top,
+.public-fixture-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.public-fixture-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.public-fixture-tags span {
+  padding: 4px 7px;
+  border-radius: 5px;
+  background: #f1f4fa;
+  color: #67738a;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.public-fixture-tags .public-fixture-stage {
+  background: #e9edff;
+  color: #344bb7;
+}
+
+.public-fixture-tags .public-fixture-bracket {
+  background: #f3e8ff;
+  color: #7e22ce;
+}
+
+.public-fixture-status {
+  padding: 5px 8px;
+  border-radius: 20px;
+  background: #eef2f7;
+  color: #596579;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.status-upcoming { background: #eaf1ff; color: #3153bf; }
+.status-live { background: #fee2e2; color: #b91c1c; }
+.status-completed { background: #dcfce7; color: #166534; }
+.status-postponed { background: #fef3c7; color: #92400e; }
+.status-cancelled { background: #f1f5f9; color: #64748b; }
+
+.public-fixture-teams {
+  margin: 25px 0 22px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.public-fixture-teams strong {
+  overflow-wrap: anywhere;
+  color: #172033;
+  font-size: 14px;
+}
+
+.public-fixture-score span {
+  color: #172b78;
+  font-size: 23px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.public-fixture-score .public-fixture-vs {
+  color: #9aa4b5;
+  font-size: 12px;
+}
+
+.public-fixture-card-footer {
+  padding-top: 13px;
+  border-top: 1px solid #edf0f5;
+}
+
+.public-fixture-card-footer > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #69758a;
+  font-size: 10px;
+}
+
+.public-fixture-predict-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #3452c8;
+  font-size: 10px;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.public-fixture-predict-link:hover {
+  text-decoration: underline;
+}
+
+.public-fixture-status-note {
+  color: #798498;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.public-fixtures-empty {
+  min-height: 190px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 1px dashed #cbd4e3;
+  border-radius: 14px;
+  background: #fff;
+  color: #7e8aa0;
+  text-align: center;
+  font-size: 13px;
+}
+
+.public-fixtures-empty h3 {
+  margin: 0;
+  color: #263149;
+  font-size: 16px;
+}
+
+.public-fixtures-empty p {
+  margin: 0;
+}
+
+.public-fixtures-bottom-links {
+  margin-top: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.public-fixtures-bottom-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #354fbd;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.public-fixtures-footer {
+  padding: 24px 5%;
+  background: #10172a;
+  color: #aeb9cc;
+  font-size: 11px;
+  text-align: center;
+}
+
+@media (max-width: 850px) {
+  .public-fixtures-filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .public-fixtures-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .public-fixtures-nav {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .public-fixtures-hero {
+    padding: 24px 20px;
+  }
+
+  .public-fixtures-hero-icon {
+    width: 38px;
+  }
+
+  .public-fixtures-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .public-fixtures-summary article {
+    padding: 13px;
+  }
+
+  .public-fixtures-filter-grid,
+  .public-fixtures-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .public-fixtures-list-heading h2 {
+    font-size: 18px;
+  }
+
+  .public-fixture-teams {
+    gap: 7px;
+  }
+
+  .public-fixture-teams strong {
+    font-size: 12px;
+  }
+
+  .public-fixture-card-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

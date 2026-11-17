@@ -57,9 +57,11 @@ function Login() {
         throw profileError;
       }
 
-      // Send administrators to the dashboard.
-      // Regular participants go to the homepage.
-      navigate(profile.role === 'admin' ? '/admin' : '/');
+      // Send administrators and participants to their respective dashboards.
+navigate(
+  profile.role === 'admin' ? '/admin' : '/dashboard',
+  { replace: true }
+);
 
     } catch (error) {
       setError(error.message);

@@ -1,0 +1,585 @@
+
+/* Main participant dashboard layout. */
+.participant-page {
+  min-height: 100vh;
+  background: #f4f6fb;
+  color: #111827;
+  font-family: inherit;
+}
+
+.participant-header {
+  min-height: 76px;
+  padding: 0 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  background: #10172a;
+  color: #ffffff;
+}
+
+/* Brand styling. */
+.participant-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  font-size: 21px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.participant-brand-icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: #2448e8;
+  color: #ffffff;
+}
+
+.participant-brand-highlight {
+  color: #a3e635;
+}
+
+/* Main navigation. */
+.participant-nav {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.participant-nav a {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.participant-nav a:hover,
+.participant-nav .participant-nav-active {
+  color: #a3e635;
+}
+
+/* Participant account controls. */
+.participant-account {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.participant-account-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: right;
+}
+
+.participant-account-info strong {
+  font-size: 13px;
+}
+
+.participant-account-info span {
+  color: #aebbd0;
+  font-size: 11px;
+}
+
+.participant-logout {
+  width: 39px;
+  height: 39px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #3b4964;
+  border-radius: 10px;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.participant-logout:hover {
+  background: #26344f;
+}
+
+/* Main page content. */
+.participant-content {
+  width: min(1120px, 90%);
+  margin: 0 auto;
+  padding: 38px 0 25px;
+}
+
+/* Welcome banner. */
+.participant-welcome {
+  min-height: 190px;
+  padding: 30px 35px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-radius: 20px;
+  background: linear-gradient(120deg, #111a36, #203da5);
+  color: #ffffff;
+}
+
+.participant-eyebrow {
+  margin: 0 0 9px;
+  color: #5773ef;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.participant-welcome .participant-eyebrow {
+  color: #c1d0ff;
+}
+
+.participant-welcome h1 {
+  margin: 0 0 12px;
+  font-size: clamp(25px, 4vw, 35px);
+}
+
+.participant-welcome p:last-child {
+  max-width: 620px;
+  margin: 0;
+  color: #d7def1;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.participant-welcome-icon {
+  width: 115px;
+  height: 115px;
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 9%);
+  color: #c8f36b;
+}
+
+/* Dashboard statistics. */
+.participant-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 17px;
+  margin: 25px 0 38px;
+}
+
+.participant-stat-card {
+  padding: 21px;
+  border: 1px solid #e5e9f1;
+  border-radius: 15px;
+  background: #ffffff;
+  box-shadow: 0 5px 18px rgb(15 23 42 / 4%);
+}
+
+.participant-stat-icon {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+}
+
+.points-icon {
+  background: #eef2ff;
+  color: #4059d8;
+}
+
+.predictions-icon {
+  background: #f3e8ff;
+  color: #9333ea;
+}
+
+.correct-icon {
+  background: #ecfccb;
+  color: #4d7c0f;
+}
+
+.accuracy-icon {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
+.participant-stat-card p {
+  margin: 16px 0 7px;
+  color: #657087;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.participant-stat-card h2 {
+  margin: 0 0 5px;
+  color: #121a30;
+  font-size: 29px;
+}
+
+.participant-stat-card > span:last-child {
+  color: #8490a3;
+  font-size: 11px;
+}
+
+/* Sections and headings. */
+.participant-section {
+  margin-bottom: 36px;
+}
+
+.participant-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 15px;
+  margin-bottom: 17px;
+}
+
+.participant-section-heading .participant-eyebrow {
+  margin-bottom: 5px;
+}
+
+.participant-section-heading h2 {
+  margin: 0;
+  color: #131b31;
+  font-size: 22px;
+}
+
+.participant-section-count {
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: #e8edff;
+  color: #334dbd;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Upcoming fixture cards. */
+.participant-fixture-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.participant-fixture-card {
+  padding: 19px;
+  border: 1px solid #e6eaf2;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.participant-fixture-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: #768197;
+  font-size: 11px;
+}
+
+.participant-fixture-top span:first-child {
+  color: #4058c8;
+  font-weight: 700;
+}
+
+.participant-fixture-teams {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.participant-fixture-teams strong {
+  overflow-wrap: anywhere;
+  font-size: 14px;
+}
+
+.participant-fixture-teams strong:last-child {
+  text-align: right;
+}
+
+.participant-fixture-teams > span {
+  color: #98a2b3;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+/* Completed results. */
+.participant-results-list {
+  display: grid;
+  gap: 10px;
+}
+
+.participant-result-card {
+  padding: 16px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  border: 1px solid #e6eaf2;
+  border-radius: 13px;
+  background: #ffffff;
+}
+
+.participant-result-card > div {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+}
+
+.participant-result-card strong {
+  font-size: 13px;
+}
+
+.participant-result-score {
+  padding: 7px 12px;
+  border-radius: 8px;
+  background: #eef2ff;
+  color: #263fae;
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.participant-result-card > span {
+  color: #778196;
+  font-size: 11px;
+}
+
+/* Links and quick actions. */
+.participant-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #3452cd;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.participant-quick-links {
+  padding: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  border-radius: 15px;
+  background: #e9edff;
+}
+
+.participant-quick-links h2 {
+  margin: 0 0 7px;
+  font-size: 18px;
+}
+
+.participant-quick-links p {
+  margin: 0;
+  color: #5d6880;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.participant-standings-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 12px 17px;
+  border-radius: 9px;
+  background: #263fae;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.participant-standings-button:hover {
+  background: #1b328e;
+}
+
+/* Empty states and error messages. */
+.participant-empty {
+  padding: 35px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px dashed #cbd3e2;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #7d8aa1;
+  text-align: center;
+}
+
+.participant-empty h3 {
+  margin: 13px 0 5px;
+  color: #27334a;
+  font-size: 15px;
+}
+
+.participant-empty p {
+  margin: 0;
+  font-size: 12px;
+}
+
+.participant-error {
+  margin: 20px 0;
+  padding: 13px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  background: #fff1f2;
+  color: #b91c1c;
+  font-size: 13px;
+}
+
+/* Loading state. */
+.participant-loading {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  background: #f4f6fb;
+  color: #334155;
+}
+
+.participant-loading-spinner {
+  width: 35px;
+  height: 35px;
+  border: 4px solid #dce3f4;
+  border-top-color: #3452cd;
+  border-radius: 50%;
+  animation: participant-spin 0.8s linear infinite;
+}
+
+@keyframes participant-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.participant-footer {
+  padding: 30px 0 10px;
+  color: #8a94a6;
+  font-size: 11px;
+  text-align: center;
+}
+
+/* Tablet and mobile adjustments. */
+@media (max-width: 850px) {
+  .participant-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .participant-header {
+    flex-wrap: wrap;
+    padding: 15px 5%;
+  }
+
+  .participant-nav {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    padding-top: 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .participant-content {
+    width: 92%;
+    padding-top: 22px;
+  }
+
+  .participant-welcome {
+    min-height: 0;
+    padding: 24px 20px;
+  }
+
+  .participant-welcome-icon {
+    width: 65px;
+    height: 65px;
+  }
+
+  .participant-welcome-icon svg {
+    width: 37px;
+    height: 37px;
+  }
+
+  .participant-welcome h1 {
+    font-size: 25px;
+  }
+
+  .participant-welcome p:last-child {
+    font-size: 12px;
+  }
+
+  .participant-stats {
+    gap: 10px;
+    margin: 17px 0 30px;
+  }
+
+  .participant-stat-card {
+    padding: 15px;
+  }
+
+  .participant-stat-card h2 {
+    font-size: 25px;
+  }
+
+  .participant-fixture-list {
+    grid-template-columns: 1fr;
+  }
+
+  .participant-section-heading h2 {
+    font-size: 19px;
+  }
+
+  .participant-result-card {
+    align-items: flex-start;
+  }
+
+  .participant-result-card > div {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .participant-result-card strong {
+    font-size: 11px;
+  }
+
+  .participant-quick-links {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .participant-header {
+    gap: 14px;
+  }
+
+  .participant-brand {
+    font-size: 18px;
+  }
+
+  .participant-account-info strong {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+/* Link participants directly to the prediction form. */
+.participant-predict-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 16px;
+  color: #3452cd;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.participant-predict-link:hover {
+  text-decoration: underline;
+}
