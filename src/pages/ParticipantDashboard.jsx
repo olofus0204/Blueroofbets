@@ -70,6 +70,7 @@ function ParticipantDashboard() {
 
         if (userError) throw userError;
 
+        // Redirect unauthenticated visitors to the login page.
         if (!user) {
           navigate('/login', { replace: true });
           return;
@@ -123,7 +124,9 @@ function ParticipantDashboard() {
           recentResult,
         ];
 
-        const failedQuery = queryResults.find((result) => result.error);
+        const failedQuery = queryResults.find(
+          (result) => result.error
+        );
 
         if (failedQuery) throw failedQuery.error;
 
@@ -139,17 +142,20 @@ function ParticipantDashboard() {
             (prediction) => prediction.id
           );
 
-          const { data: answerData, error: answerError } = await supabase
-            .from('prediction_answers')
-            .select('id, prediction_id, is_correct, points_awarded, scored_at')
-            .in('prediction_id', predictionIds);
+          const { data: answerData, error: answerError } =
+            await supabase
+              .from('prediction_answers')
+              .select(
+                'id, prediction_id, is_correct, points_awarded, scored_at'
+              )
+              .in('prediction_id', predictionIds);
 
           if (answerError) throw answerError;
 
           answers = answerData || [];
         }
 
-        // Collect team IDs used by the upcoming and completed fixtures.
+        // Collect team IDs used by upcoming and completed fixtures.
         const teamIds = [
           ...new Set(
             [...upcomingMatches, ...recentMatches].flatMap((match) => [
@@ -159,14 +165,15 @@ function ParticipantDashboard() {
           ),
         ].filter(Boolean);
 
-        // Load team names so fixture cards can display readable names.
+        // Load team names so fixture cards display readable names.
         let teams = {};
 
         if (teamIds.length > 0) {
-          const { data: teamData, error: teamError } = await supabase
-            .from('teams')
-            .select('id, name')
-            .in('id', teamIds);
+          const { data: teamData, error: teamError } =
+            await supabase
+              .from('teams')
+              .select('id, name')
+              .in('id', teamIds);
 
           if (teamError) throw teamError;
 
@@ -219,7 +226,7 @@ function ParticipantDashboard() {
     navigate('/login', { replace: true });
   };
 
-  // Calculate points and accuracy from the participant's records.
+  // Calculate total points from the participant's prediction slips.
   const totalPoints = dashboard.predictions.reduce(
     (total, prediction) =>
       total + Number(prediction.points_awarded || 0),
@@ -242,6 +249,7 @@ function ParticipantDashboard() {
   const displayName =
     dashboard.profile?.display_name || 'Participant';
 
+  // Display a loading screen while dashboard data is retrieved.
   if (loading) {
     return (
       <main className="participant-loading">
@@ -262,7 +270,9 @@ function ParticipantDashboard() {
 
           <span>
             Blueroof
-            <span className="participant-brand-highlight">bets</span>
+            <span className="participant-brand-highlight">
+              bets
+            </span>
           </span>
         </Link>
 
@@ -271,6 +281,7 @@ function ParticipantDashboard() {
             Dashboard
           </Link>
 
+          <Link to="/my-betslips">My Betslips</Link>
           <Link to="/standings">Standings</Link>
           <Link to="/">Home</Link>
         </nav>
@@ -294,7 +305,7 @@ function ParticipantDashboard() {
       </header>
 
       <div className="participant-content">
-        {/* Welcome section. */}
+        {/* Welcome section with direct access to submitted prediction slips. */}
         <section className="participant-welcome">
           <div>
             <p className="participant-eyebrow">
@@ -307,6 +318,16 @@ function ParticipantDashboard() {
               Track your predictions, follow the fixtures and see
               how you are performing in the tournament.
             </p>
+
+            {/* Direct access to all previously submitted bets. */}
+            <Link
+              to="/my-betslips"
+              className="participant-betslips-button"
+            >
+              <ClipboardList size={18} />
+              My Betslips
+              <ArrowRight size={17} />
+            </Link>
           </div>
 
           <div className="participant-welcome-icon">
@@ -328,6 +349,7 @@ function ParticipantDashboard() {
             <span className="participant-stat-icon points-icon">
               <Trophy size={22} />
             </span>
+
             <p>Total points</p>
             <h2>{totalPoints}</h2>
             <span>Points earned</span>
@@ -337,6 +359,7 @@ function ParticipantDashboard() {
             <span className="participant-stat-icon predictions-icon">
               <ClipboardList size={22} />
             </span>
+
             <p>Prediction slips</p>
             <h2>{dashboard.predictions.length}</h2>
             <span>Matches predicted</span>
@@ -346,6 +369,7 @@ function ParticipantDashboard() {
             <span className="participant-stat-icon correct-icon">
               <Target size={22} />
             </span>
+
             <p>Correct answers</p>
             <h2>{correctAnswers}</h2>
             <span>Successfully scored picks</span>
@@ -355,6 +379,7 @@ function ParticipantDashboard() {
             <span className="participant-stat-icon accuracy-icon">
               <Medal size={22} />
             </span>
+
             <p>Accuracy</p>
             <h2>{accuracy}%</h2>
             <span>Of scored answers</span>
@@ -378,7 +403,9 @@ function ParticipantDashboard() {
             <div className="participant-empty">
               <CalendarDays size={30} />
               <h3>No upcoming fixtures</h3>
-              <p>New fixtures will appear here when they are scheduled.</p>
+              <p>
+                New fixtures will appear here when they are scheduled.
+              </p>
             </div>
           ) : (
             <div className="participant-fixture-list">
@@ -393,26 +420,27 @@ function ParticipantDashboard() {
                   </div>
 
                   <div className="participant-fixture-teams">
-
-                    {/* Open the prediction form for this specific fixture. */}
-<Link
-  to={`/predict/${match.id}`}
-  className="participant-predict-link"
->
-  Make predictions <ArrowRight size={16} />
-</Link> 
-
-
                     <strong>
-                      {dashboard.teams[match.home_team_id] || 'Home team'}
+                      {dashboard.teams[match.home_team_id] ||
+                        'Home team'}
                     </strong>
 
                     <span>VS</span>
 
                     <strong>
-                      {dashboard.teams[match.away_team_id] || 'Away team'}
+                      {dashboard.teams[match.away_team_id] ||
+                        'Away team'}
                     </strong>
                   </div>
+
+                  {/* Open the prediction form for this fixture. */}
+                  <Link
+                    to={`/predict/${match.id}`}
+                    className="participant-predict-link"
+                  >
+                    Make predictions
+                    <ArrowRight size={16} />
+                  </Link>
                 </article>
               ))}
             </div>
@@ -427,8 +455,12 @@ function ParticipantDashboard() {
               <h2>Recent match results</h2>
             </div>
 
-            <Link to="/standings" className="participant-text-link">
-              View standings <ArrowRight size={16} />
+            <Link
+              to="/standings"
+              className="participant-text-link"
+            >
+              View standings
+              <ArrowRight size={16} />
             </Link>
           </div>
 
@@ -447,7 +479,8 @@ function ParticipantDashboard() {
                 >
                   <div>
                     <strong>
-                      {dashboard.teams[match.home_team_id] || 'Home team'}
+                      {dashboard.teams[match.home_team_id] ||
+                        'Home team'}
                     </strong>
 
                     <span className="participant-result-score">
@@ -455,7 +488,8 @@ function ParticipantDashboard() {
                     </span>
 
                     <strong>
-                      {dashboard.teams[match.away_team_id] || 'Away team'}
+                      {dashboard.teams[match.away_team_id] ||
+                        'Away team'}
                     </strong>
                   </div>
 
@@ -476,8 +510,12 @@ function ParticipantDashboard() {
             </p>
           </div>
 
-          <Link to="/standings" className="participant-standings-button">
-            View group standings <ArrowRight size={17} />
+          <Link
+            to="/standings"
+            className="participant-standings-button"
+          >
+            View group standings
+            <ArrowRight size={17} />
           </Link>
         </section>
 

@@ -8,6 +8,7 @@ import {
   Target,
   Medal,
   Zap,
+  ClipboardList,
 } from 'lucide-react';
 
 import Navbar from '../components/Navbar';
@@ -401,15 +402,23 @@ const getFixtureAction = (matchId) => {
             </p>
 
             <div className="hero-actions">
-              <a href={mainActionPath} className="primary-button">
-                {mainActionLabel}
-                <ArrowRight size={18} />
-              </a>
+  <a href={mainActionPath} className="primary-button">
+    {mainActionLabel}
+    <ArrowRight size={18} />
+  </a>
 
-              <a href="#fixtures" className="secondary-button">
-                View Fixtures
-              </a>
-            </div>
+  {/* Give logged-in participants direct access to their submitted predictions. */}
+  {accountRole === 'participant' && (
+    <Link to="/my-betslips" className="secondary-button">
+      <ClipboardList size={17} />
+      My Betslips
+    </Link>
+  )}
+
+  <a href="#fixtures" className="secondary-button">
+    View Fixtures
+  </a>
+</div>
 
             {/* Quick competition information. */}
             <div className="hero-stats">

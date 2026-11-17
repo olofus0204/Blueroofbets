@@ -12,6 +12,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import ParticipantDashboard from './pages/ParticipantDashboard';
 import PredictionPage from './pages/PredictionPage';
 import Fixtures from './pages/Fixtures';
+import MyBetslips from './pages/MyBetslips';
 
 import './App.css';
 
@@ -25,7 +26,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/standings" element={<Standings />} />
-   
+
           {/* Any signed-in participant can access this dashboard. */}
 <Route
   path="/dashboard"
@@ -41,18 +42,29 @@ function App() {
      element={
        <ProtectedRoute>
          <PredictionPage />
-       </ProtectedRoute>
-     }
+       </ProtectedRoute>}
    />
+{/* Only signed-in participants can view their own betslips. */}
+<Route
+  path="/my-betslips"
+  element={
+    <ProtectedRoute>
+      <MyBetslips />
+    </ProtectedRoute>
+  }
+/>
 
    {/* Public fixtures page. */}
 <Route path="/fixtures" element={<Fixtures />} />
-  
+
     {/* Public tournament leaderboard. */}
 <Route
   path="/leaderboard"
   element={<Leaderboard />}
 />
+
+
+
           {/* Admin-only pages. */}
           <Route
             path="/admin"

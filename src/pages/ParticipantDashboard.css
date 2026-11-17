@@ -583,3 +583,65 @@
 .participant-predict-link:hover {
   text-decoration: underline;
 }
+
+
+/* =====================================================
+   PROMINENT MY BETSLIPS BUTTON
+   ===================================================== */
+
+.participant-betslips-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+
+  width: fit-content;
+  min-width: 280px;
+  min-height: 64px;
+
+  margin-top: 24px;
+  padding: 17px 28px;
+
+  border: 2px solid #a3e635;
+  border-radius: 13px;
+
+  background: #a3e635;
+  color: #10172a;
+
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+
+  box-shadow: 0 7px 20px rgb(163 230 53 / 25%);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.participant-betslips-button svg {
+  width: 25px;
+  height: 25px;
+  flex-shrink: 0;
+}
+
+.participant-betslips-button:hover {
+  background: #bef264;
+  border-color: #bef264;
+  color: #10172a;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgb(163 230 53 / 35%);
+}
+
+/* Make the button prominent on smaller screens too. */
+@media (max-width: 600px) {
+  .participant-betslips-button {
+    width: 100%;
+    min-width: 0;
+    min-height: 62px;
+    font-size: 17px;
+    margin-top: 20px;
+  }
+}
