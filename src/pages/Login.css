@@ -196,3 +196,19 @@
     font-size: 23px;
   }
 }
+
+/* Keep the Turnstile widget centred in the login form. */
+.login-captcha {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 18px 0;
+  min-height: 65px;
+}
+
+.login-captcha-error {
+  color: #dc2626;
+  font-size: 12px;
+  text-align: center;
+  margin: 8px 0;
+}

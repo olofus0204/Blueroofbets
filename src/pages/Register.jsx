@@ -1,6 +1,7 @@
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Turnstile } from '@marsidev/react-turnstile';
 import {
   Trophy,
   User,
@@ -17,6 +18,12 @@ import './Register.css';
 function Register() {
   const navigate = useNavigate();
 
+  // Reference the CAPTCHA widget so it can be reset after submission.
+  const turnstileRef = useRef(null);
+
+  // Read the public Cloudflare Site Key from the environment.
+  const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+
   // Store the registration form values.
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -27,10 +34,14 @@ function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  // Store the CAPTCHA verification token.
+  const [captchaToken, setCaptchaToken] = useState('');
+
   // Track form submission and feedback messages.
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [captchaError, setCaptchaError] = useState('');
 
   // Handle registration through Supabase Authentication.
   const handleRegister = async (event) => {
@@ -38,8 +49,23 @@ function Register() {
 
     setError('');
     setSuccess('');
+    setCaptchaError('');
 
-    // Validate the form before contacting Supabase.
+    // Make sure the Cloudflare configuration is available.
+    if (!siteKey) {
+      setError(
+        'Security verification is not configured. Please contact the administrator.'
+      );
+      return;
+    }
+
+    // Require successful CAPTCHA verification.
+    if (!captchaToken) {
+      setCaptchaError('Please complete the security verification.');
+      return;
+    }
+
+    // Validate the registration form before contacting Supabase.
     if (fullName.trim().length < 2) {
       setError('Please enter your full name.');
       return;
@@ -57,11 +83,20 @@ function Register() {
 
     setLoading(true);
 
+    // Redirect only when Supabase returns an authenticated session.
+    let shouldRedirect = false;
+
     try {
-      const { data, error: signupError } = await supabase.auth.signUp({
+      // Register the new participant and send the CAPTCHA token.
+      const {
+        data,
+        error: signupError,
+      } = await supabase.auth.signUp({
         email: email.trim(),
         password,
         options: {
+          captchaToken,
+
           // The database trigger uses this to create the profile.
           data: {
             display_name: fullName.trim(),
@@ -73,19 +108,29 @@ function Register() {
         throw signupError;
       }
 
-      // If email confirmation is enabled, the user may need
-      // to verify their email before they can sign in.
+      // Email confirmation is currently disabled for the free beta.
       if (data.session) {
-        navigate('/');
+        shouldRedirect = true;
       } else {
         setSuccess(
-          'Account created! Please check your email for a verification link.'
+          'Your account was created, but no active session was returned. Please sign in.'
         );
       }
-    } catch (err) {
-      setError(err.message || 'Registration failed. Please try again.');
+    } catch (signupError) {
+      setError(
+        signupError.message || 'Registration failed. Please try again.'
+      );
     } finally {
+      // Reset the single-use CAPTCHA token after every attempt.
+      setCaptchaToken('');
+      turnstileRef.current?.reset();
+
       setLoading(false);
+    }
+
+    // New authenticated participants go directly to their dashboard.
+    if (shouldRedirect) {
+      navigate('/dashboard', { replace: true });
     }
   };
 
@@ -98,7 +143,11 @@ function Register() {
           <span className="register-brand-icon">
             <Trophy size={24} />
           </span>
-          <span>Blueroof<span className="brand-highlight">bets</span></span>
+
+          <span>
+            Blueroof
+            <span className="brand-highlight">bets</span>
+          </span>
         </Link>
 
         {/* Registration form */}
@@ -111,12 +160,14 @@ function Register() {
             </p>
           </div>
 
+          {/* Display registration errors. */}
           {error && (
             <div className="register-message error-message">
               {error}
             </div>
           )}
 
+          {/* Display successful registration feedback. */}
           {success && (
             <div className="register-message success-message">
               {success}
@@ -128,14 +179,17 @@ function Register() {
             {/* Full name */}
             <div className="register-field">
               <label htmlFor="fullName">Full name</label>
+
               <div className="register-input-wrapper">
                 <User size={18} />
+
                 <input
                   id="fullName"
                   type="text"
                   placeholder="Enter your full name"
                   value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
+                  onChange={(event) => setFullName(event.target.value)}
+                  autoComplete="name"
                   required
                 />
               </div>
@@ -144,14 +198,17 @@ function Register() {
             {/* Email */}
             <div className="register-field">
               <label htmlFor="email">Email address</label>
+
               <div className="register-input-wrapper">
                 <Mail size={18} />
+
                 <input
                   id="email"
                   type="email"
                   placeholder="Enter your email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(event) => setEmail(event.target.value)}
+                  autoComplete="email"
                   required
                 />
               </div>
@@ -160,15 +217,18 @@ function Register() {
             {/* Password */}
             <div className="register-field">
               <label htmlFor="password">Password</label>
+
               <div className="register-input-wrapper">
                 <Lock size={18} />
+
                 <input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Create a password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(event) => setPassword(event.target.value)}
                   minLength={8}
+                  autoComplete="new-password"
                   required
                 />
 
@@ -178,7 +238,11 @@ function Register() {
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label="Toggle password visibility"
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? (
+                    <EyeOff size={18} />
+                  ) : (
+                    <Eye size={18} />
+                  )}
                 </button>
               </div>
             </div>
@@ -186,14 +250,17 @@ function Register() {
             {/* Confirm password */}
             <div className="register-field">
               <label htmlFor="confirmPassword">Confirm password</label>
+
               <div className="register-input-wrapper">
                 <Lock size={18} />
+
                 <input
                   id="confirmPassword"
                   type={showConfirmPassword ? 'text' : 'password'}
                   placeholder="Confirm your password"
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={(event) => setConfirmPassword(event.target.value)}
+                  autoComplete="new-password"
                   required
                 />
 
@@ -214,13 +281,51 @@ function Register() {
               </div>
             </div>
 
+            {/* Cloudflare Turnstile security verification. */}
+            <div className="register-captcha">
+              {siteKey ? (
+                <Turnstile
+                  ref={turnstileRef}
+                  siteKey={siteKey}
+                  options={{ theme: 'auto' }}
+                  onSuccess={(token) => {
+                    setCaptchaToken(token);
+                    setCaptchaError('');
+                  }}
+                  onExpire={() => {
+                    setCaptchaToken('');
+                    setCaptchaError(
+                      'Security verification expired. Please complete it again.'
+                    );
+                  }}
+                  onError={() => {
+                    setCaptchaToken('');
+                    setCaptchaError(
+                      'Security verification failed. Please try again.'
+                    );
+                  }}
+                />
+              ) : (
+                <p className="register-captcha-error">
+                  Cloudflare Site Key is missing from the application configuration.
+                </p>
+              )}
+            </div>
+
+            {captchaError && (
+              <p className="register-captcha-error" role="alert">
+                {captchaError}
+              </p>
+            )}
+
             {/* Submit */}
             <button
               type="submit"
               className="register-submit"
-              disabled={loading}
+              disabled={loading || !captchaToken || !siteKey}
             >
               {loading ? 'Creating account...' : 'Create account'}
+
               {!loading && <ArrowRight size={18} />}
             </button>
           </form>
